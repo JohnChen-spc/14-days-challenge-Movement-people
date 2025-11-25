@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movement People · 14天行动挑战</title>
+    <!-- 保留字体引入，用于其他文字样式 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Noto+Sans+SC:wght@500;700;900&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <style>
+        /* 全局样式 - 增强灵动性+吸引力字体 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Noto Sans SC', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .starry-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0A0A0A;
+            z-index: -1;
+            overflow: hidden;
+        }
+        body {
+            color: #F5F5F5;
+            line-height: 1.7;
+            background-color: transparent;
+            animation: bodyFadeIn 1.5s ease-out;
+        }
+        @keyframes bodyFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .btn {
+            display: inline-block;
+            padding: 16px 36px;
+            background-color: #2D9D5C;
+            color: #FFFFFF;
+            font-weight: 800;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-align: center;
+            transform: translateY(0);
+            box-shadow: 0 0 20px rgba(45, 157, 92, 0.3);
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn:hover {
+            background-color: #1E7D46;
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 0 30px rgba(45, 157, 92, 0.6);
+        }
+        .btn:active {
+            transform: translateY(-2px) scale(0.98);
+            box-shadow: 0 0 15px rgba(45, 157, 92, 0.4);
+        }
+        .btn-secondary {
+            background-color: #1A1A1A;
+            color: #CCCCCC;
+            box-shadow: 0 0 15px rgba(0,0,0,0.4);
+            border: 1px solid #333;
+        }
+        .btn-secondary:hover {
+            background-color: #2D2D2D;
+            color: #FFFFFF;
+            box-shadow: 0 0 25px rgba(0,0,0,0.6);
+            border-color: #444;
+        }
+        /* 取消打卡按钮样式（红色系，区分完成按钮） */
+        .btn-cancel {
+            background-color: #D32F2F;
+            box-shadow: 0 0 20px rgba(211, 47, 47, 0.3);
+        }
+        .btn-cancel:hover {
+            background-color: #B71C1C;
+            box-shadow: 0 0 30px rgba(211, 47, 47, 0.6);
+        }
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 90%;
+            max-width: 420px;
+            background-color: #1A1A1A;
+            border-top: 12px solid #2D9D5C;
+            border: 2px solid #2D9D5C;
+            padding: 35px;
+            z-index: 100;
+            display: none;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 6px;
+            box-shadow: 0 0 40px rgba(45, 157, 92, 0.2);
+        }
+        .popup.active {
+            display: block;
+            transform: translate(-50%, -50%) scale(1.02);
+        }
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 99;
+            display: none;
+            backdrop-filter: blur(4px);
+            transition: opacity 0.3s ease;
+        }
+        .popup-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+        /* 新增：用户标识弹窗样式 */
+        #user-id-popup {
+            border-top-color: #4CAF50;
+        }
+        .user-id-input {
+            width: 100%;
+            padding: 14px;
+            margin: 20px 0;
+            background-color: #2D2D2D;
+            border: 2px solid #2D9D5C;
+            border-radius: 4px;
+            color: #FFFFFF;
+            font-size: 18px;
+            outline: none;
+        }
+        .user-id-input:focus {
+            box-shadow: 0 0 15px rgba(45, 157, 92, 0.5);
+        }
+        header {
+            background-color: rgba(26, 26, 26, 0.95);
+            border-left: 4px solid #2D9D5C;
+            padding: 18px 0;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        header.scroll {
+            background-color: rgba(10, 10, 10, 0.98);
+            padding: 12px 0;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-main {
+            font-size: 28px;
+            font-weight: 900;
+            color: #2D9D5C;
+            text-shadow: 0 0 15px rgba(45, 157, 92, 0.5);
+            letter-spacing: 1px;
+            transition: transform 0.3s ease;
+        }
+        header:hover .logo-main {
+            transform: scale(1.05);
+        }
+        .logo-tag {
+            font-size: 14px;
+            color: #888888;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 30px;
+        }
+        .nav-btn {
+            color: #AAAAAA;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 17px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+        .nav-btn.active {
+            color: #2D9D5C;
+            text-shadow: 0 0 10px rgba(45, 157, 92, 0.4);
+        }
+        .nav-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background-color: #2D9D5C;
+            transition: width 0.3s ease;
+            border-radius: 3px;
+        }
+        .nav-btn:hover::after {
+            width: 100%;
+        }
+        .nav-btn:hover {
+            color: #FFFFFF;
+            transform: translateY(-2px);
+        }
+        .welcome-section {
+            padding: 60px 0 100px;
+            text-align: center;
+            background: linear-gradient(rgba(10,10,10,0.85), rgba(10,10,10,0.95));
+            margin-bottom: 80px;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(45, 157, 92, 0.2);
+        }
+        .video-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(45, 157, 92, 0.3);
+            transform: translateY(0);
+            transition: transform 0.5s ease;
+        }
+        .video-container:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(45, 157, 92, 0.5);
+        }
+        .welcome-iframe {
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            position: relative;
+            border: 3px solid rgba(45, 157, 92, 0.4);
+        }
+        .welcome-iframe iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .welcome-title {
+            font-size: 48px;
+            color: #2D9D5C;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 25px rgba(45, 157, 92, 0.6);
+            animation: pulse 2.5s infinite alternate, fadeInUp 1s ease-out;
+            font-weight: 900;
+        }
+        @keyframes pulse {
+            from { text-shadow: 0 0 25px rgba(45, 157, 92, 0.6); }
+            to { text-shadow: 0 0 40px rgba(45, 157, 92, 0.9); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .welcome-subtitle {
+            font-size: 26px;
+            color: #FFFFFF;
+            margin-bottom: 35px;
+            font-weight: 700;
+            animation: fadeInUp 1.2s ease-out;
+        }
+        .welcome-divider {
+            width: 200px;
+            height: 3px;
+            background-color: #2D9D5C;
+            margin: 0 auto 45px;
+            box-shadow: 0 0 15px rgba(45, 157, 92, 0.7);
+            animation: fadeInUp 1.4s ease-out;
+        }
+        .welcome-text {
+            max-width: 700px;
+            margin: 0 auto 60px;
+            text-align: left;
+            font-size: 18px;
+            line-height: 2;
+            background-color: rgba(26, 26, 26, 0.7);
+            padding: 30px;
+            border-left: 4px solid #2D9D5C;
+            border-radius: 4px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            animation: fadeInUp 1.6s ease-out;
+        }
+        .welcome-text strong {
+            color: #2D9D5C;
+            font-weight: 800;
+            font-size: 19px;
+        }
+        .welcome-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+            flex-wrap: wrap;
+            animation: fadeInUp 1.8s ease-out;
+        }
+        .task-section {
+            margin-bottom: 120px;
+            animation: fadeInUp 2s ease-out;
+        }
+        .section-title {
+            font-size: 32px;
+            color: #2D9D5C;
+            margin-bottom: 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-shadow: 0 0 15px rgba(45, 157, 92, 0.5);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .section-tag {
+            font-size: 16px;
+            color: #888888;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .task-rules {
+            font-size: 16px;
+            color: #BBBBBB;
+            margin-bottom: 45px;
+            line-height: 2.2;
+            background-color: rgba(26, 26, 26, 0.7);
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .task-rules strong {
+            color: #2D9D5C;
+            font-weight: 700;
+        }
+        .task-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+        @media (max-width: 768px) {
+            .task-grid {
+                grid-template-columns: 1fr;
+            }
+            .welcome-title {
+                font-size: 36px;
+            }
+            .section-title {
+                font-size: 28px;
+            }
+        }
+        .task-item {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            background-color: rgba(26, 26, 26, 0.8);
+            padding: 25px;
+            border-radius: 6px;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 1px solid rgba(45, 157, 92, 0.1);
+        }
+        .task-item:hover {
+            background-color: rgba(26, 26, 26, 0.95);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            border-color: rgba(45, 157, 92, 0.3);
+        }
+        /* 已完成的任务按钮样式（灰色+对勾标识） */
+        .task-btn.completed {
+            background-color: #333333;
+            color: #888888;
+            box-shadow: none;
+            border-color: #444444;
+            position: relative;
+        }
+        .task-btn.completed::after {
+            content: '✅';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+        }
+        .task-btn.completed:hover {
+            background-color: #444444;
+            color: #AAAAAA;
+            transform: scale(1.02);
+            box-shadow: none;
+        }
+        .task-btn {
+            flex: 1;
+            padding: 25px 20px;
+            background-color: #2D9D5C;
+            color: #FFFFFF;
+            text-decoration: none;
+            font-size: 22px;
+            font-weight: 800;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 0 20px rgba(45, 157, 92, 0.3);
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid transparent;
+        }
+        .task-btn:hover {
+            background-color: #1E7D46;
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(45, 157, 92, 0.6);
+            border-color: #4CAF50;
+        }
+        .complete-btn {
+            padding: 25px 20px;
+            flex: 0 0 180px;
+            font-size: 18px;
+            font-weight: 700;
+            display: inline-block;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .progress-section {
+            margin-bottom: 120px;
+            background-color: rgba(26, 26, 26, 0.7);
+            padding: 40px;
+            border-radius: 6px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 1px solid rgba(45, 157, 92, 0.1);
+            animation: fadeInUp 2.2s ease-out;
+        }
+        .progress-stats {
+            font-size: 18px;
+            color: #BBBBBB;
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        .progress-stat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+        /* 新增：当前用户标识显示 */
+        .current-user {
+            color: #2D9D5C;
+            font-weight: 800;
+            font-size: 18px;
+            margin-left: auto;
+            padding: 5px 10px;
+            background-color: rgba(45, 157, 92, 0.1);
+            border-radius: 4px;
+        }
+        .progress-stat-value {
+            color: #2D9D5C;
+            font-weight: 800;
+            font-size: 22px;
+            text-shadow: 0 0 10px rgba(45, 157, 92, 0.4);
+        }
+        .progress-bar {
+            width: 100%;
+            height: 15px;
+            background-color: #2D2D2D;
+            margin-bottom: 45px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+            border: 1px solid #333;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2D9D5C, #4CAF50, #66BB6A);
+            width: 0%;
+            transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 0 20px rgba(45, 157, 92, 0.7);
+            animation: progressPulse 3s infinite alternate;
+        }
+        @keyframes progressPulse {
+            from { box-shadow: 0 0 20px rgba(45, 157, 92, 0.7); }
+            to { box-shadow: 0 0 30px rgba(45, 157, 92, 0.9); }
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 15px;
+        }
+        .calendar-day {
+            width: 100%;
+            aspect-ratio: 1;
+            background-color: #333333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: #F5F5F5;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            border-radius: 8px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+            font-size: 18px;
+            border: 2px solid transparent;
+        }
+        .calendar-day.completed {
+            background-color: #2D9D5C;
+            color: #FFFFFF;
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(45, 157, 92, 0.7);
+            border-color: #4CAF50;
+        }
+        /* 新增：当前日期高亮样式（橙色醒目） */
+        .calendar-day.today {
+            background-color: #FFA000 !important;
+            color: #000 !important;
+            box-shadow: 0 0 30px rgba(255, 160, 0, 0.8) !important;
+            border-color: #FFB74D !important;
+            transform: scale(1.15) !important;
+        }
+        .calendar-day:hover:not(.completed) {
+            background-color: #444444;
+            transform: scale(1.1);
+            border-color: #555;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+        footer {
+            background: linear-gradient(rgba(10,10,10,0.95), rgba(0,0,0,0.98));
+            border-top: 2px solid #2D9D5C;
+            padding: 90px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+        }
+        .footer-quote {
+            font-size: 26px;
+            color: #2D9D5C;
+            font-weight: 800;
+            margin-bottom: 25px;
+            max-width: 850px;
+            margin-left: auto;
+            margin-right: auto;
+            text-shadow: 0 0 15px rgba(45, 157, 92, 0.5);
+            line-height: 2;
+            animation: fadeInUp 1s ease-out;
+        }
+        .footer-author {
+            font-size: 18px;
+            color: #888888;
+            margin-bottom: 45px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .footer-info {
+            font-size: 16px;
+            color: #888888;
+            margin-bottom: 40px;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.8;
+        }
+        .footer-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+        .star {
+            position: absolute;
+            background-color: #FFFFFF;
+            border-radius: 50%;
+            animation: twinkle linear infinite, float 25s linear infinite alternate;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(15px, -15px) rotate(10deg); }
+        }
+        .task-item:nth-child(odd) {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        .task-item:nth-child(even) {
+            animation: fadeInUp 1s ease-out;
+        }
+        .calendar-day {
+            animation: fadeInUp 1.2s ease-out;
+        }
+        /* 保留打卡爆炸特效（如需取消可删除此段） */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #2D9D5C;
+            opacity: 0;
+            animation: confetti-fall 3s ease-in-out forwards;
+            z-index: 1000;
+            pointer-events: none;
+        }
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="starry-bg" id="starry-bg"></div>
+
+    <header id="header">
+        <div class="container header-content">
+            <div class="logo">
+                <div class="logo-main">Movement People</div>
+                <div class="logo-tag">14-DAY CHALLENGE</div>
+            </div>
+            <div class="nav-buttons">
+                <a href="#welcome" class="nav-btn active">今日任务</a>
+                <a href="#progress" class="nav-btn">进度查询</a>
+                <a href="javascript:openPopup('contact-popup')" class="nav-btn">联系John</a>
+                <!-- 新增：当前用户标识显示 -->
+                <span class="current-user" id="current-user-display" style="display: none;"></span>
+            </div>
+        </div>
+    </header>
+
+    <section id="welcome" class="welcome-section">
+        <div class="container">
+            <div class="video-container">
+                <div class="welcome-iframe">
+                    <iframe src="https://player.xinpianchang.com/?aid=13542410&amp;mid=DA96QeyDKeXQj5N0" allowfullscreen="" allow="fullscreen" frameborder="0" style="border: medium;"></iframe>
+                </div>
+            </div>
+
+            <h1 class="welcome-title">WELCOME TO 14-DAY ACTION CHALLENGE</h1>
+            <div class="welcome-divider"></div>
+            <h2 class="welcome-subtitle">欢迎加入 男性14天行动挑战</h2>
+            <div class="welcome-text">
+                <p>我是John。</p>
+                <p>这14天，没有废话，没有复杂理论，你只需聚焦3件事：</p>
+                <p><strong>身体激活 × 心智觉醒 × 落地行动</strong></p>
+                <p>每天解锁1段视频，完成1次真实行动。</p>
+                <p>不用追求完美，不用焦虑坚持——</p>
+                <p><strong>开始，就是一切。</strong></p>
+                <p>你的力量，藏在你不敢迈出的行动里。</p>
+            </div>
+            <div class="welcome-buttons">
+                <!-- 开启挑战按钮：点击滑动到任务导航 -->
+                <a href="#tasks" class="btn">立即开启挑战 →</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="tasks" class="task-section">
+        <div class="container">
+            <h2 class="section-title">
+                任务导航
+                <span class="section-tag">每日1小时，三维突破</span>
+            </h2>
+            <div class="task-rules">
+                <p>🔥 <strong>转化型任务：</strong>所有任务已开放，点击即可进入挑战</p>
+                <p>✅ 完成任务后点击「完成挑战」记录进度，解锁专属勋章</p>
+                <p>❌ 已完成的任务可点击「取消打卡」撤回进度（误操作可恢复）</p>
+                <p>⏰ 每日任务分3部分：BODY（身体）| MIND（心智）| ACTION（行动）</p>
+                <p>📹 所有任务通过高清视频指导，随时可回看复习</p>
+            </div>
+            <div class="task-grid">
+                <div class="task-item">
+                    <a href="video-day1.html" class="task-btn" id="task-btn-1">Day 1 挑战 →</a>
+                    <button class="btn complete-btn" id="complete-btn-1" onclick="toggleChallenge(1)">完成挑战 ✅</button>
+                </div>
+                <div class="task-item">
+                    <a href="video-day2.html" class="task-btn" id="task-btn-2">Day 2 挑战 →</a>
+                    <button class="btn complete-btn" id="complete-btn-2" onclick="toggleChallenge(2)">完成挑战 ✅</button>
+                </div>
+                <div class="task-item">
+                    <a href="video-day3.html" class="task-btn" id="task-btn-3">Day 3 挑战 →</a>
+                    <button class="btn complete-btn" id="complete-btn-3" onclick="toggleChallenge(3)">完成挑战 ✅</button>
+                </div>
+                <div class="task-item">
+                    <a href="video-day4.html" class="task-btn" id="task-btn-4">Day 4 挑战 →</a>
+                    <button class="btn complete-btn" id="complete-btn-4" onclick="toggleChallenge(4)">完成挑战 ✅</button>
+                </div>
+                <div class="task-item">
+                    <a href="video-day5.html" class="task-btn" id="task-btn-5">Day 5 挑战 →</a>
+                    <button class="btn complete-btn" id="complete-btn-5" onclick="toggleChallenge(5)">完成挑战 ✅</button>
+                </div>
+                <div class="task-item">
+                    <a href="video-day6.html" class="task-btn" id="task-btn-6">Day 6 挑战 →</a>
+                    <button class="btn complete-btn" id="complete-btn-6" onclick="toggleChallenge(6)">完成挑战 ✅</button>
+                </div>
+                <div class="task-item">
+                    <a href="video-day7.html" class="task-btn" id="task-btn-7">Day 7 挑战 →</a>
+                    <button class="btn complete-btn" id="complete-btn-7" onclick="toggleChallenge(7)">完成挑战 ✅</button>
+                </div>
+                <div class="task-item">
+                    <a href="video-day8.html" class="task-btn" id="task-btn-8">Day 8 挑战 →</a>
+                    <button class="btn complete-btn" id="complete-btn-8" onclick="toggleChallenge(8)">完成挑战 ✅</button>
+                </div>
+                <div class="task-item">
+                    <a href="video-day9.html" class="task-btn" id="task-btn-9">Day 9 挑战 →</a>
+                    <button class="btn complete-btn" id="complete-btn-9" onclick="toggleChallenge(9)">完成挑战 ✅</button>
+                </div>
+                <div class="task-item">
+                    <a href="video-day10.html" class="task-btn" id="task-btn-10">Day 10 挑战 →</a>
+                    <button class="btn complete-btn" id="complete-btn-10" onclick="toggleChallenge(10)">完成挑战 ✅</button>
+                </div>
+                <div class="task-item">
+                    <a href="video-day11.html" class="task-btn" id="task-btn-11">Day 11 挑战 →</a>
+                    <button class="btn complete-btn" id="complete-btn-11" onclick="toggleChallenge(11)">完成挑战 ✅</button>
+                </div>
+                <div class="task-item">
+                    <a href="video-day12.html" class="task-btn" id="task-btn-12">Day 12 挑战 →</a>
+                    <button class="btn complete-btn" id="complete-btn-12" onclick="toggleChallenge(12)">完成挑战 ✅</button>
+                </div>
+                <div class="task-item">
+                    <a href="video-day13.html" class="task-btn" id="task-btn-13">Day 13 挑战 →</a>
+                    <button class="btn complete-btn" id="complete-btn-13" onclick="toggleChallenge(13)">完成挑战 ✅</button>
+                </div>
+                <div class="task-item">
+                    <a href="video-day14.html" class="task-btn" id="task-btn-14">Day 14 挑战 →</a>
+                    <button class="btn complete-btn" id="complete-btn-14" onclick="toggleChallenge(14)">完成挑战 ✅</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="progress" class="progress-section">
+        <div class="container">
+            <h2 class="section-title">行动进度追踪</h2>
+            <div class="progress-stats">
+                <div class="progress-stat-item">
+                    已完成天数：<span id="completed-days" class="progress-stat-value">0</span> / 14天
+                </div>
+                <div class="progress-stat-item">
+                    完成进度：<span id="progress-percent" class="progress-stat-value">0</span>%
+                </div>
+                <div class="progress-stat-item">
+                    连续打卡：<span id="streak-days" class="progress-stat-value">0</span> 天
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill"></div>
+            </div>
+            <div class="calendar-grid">
+                <div class="calendar-day" data-day="1">Day1</div>
+                <div class="calendar-day" data-day="2">Day2</div>
+                <div class="calendar-day" data-day="3">Day3</div>
+                <div class="calendar-day" data-day="4">Day4</div>
+                <div class="calendar-day" data-day="5">Day5</div>
+                <div class="calendar-day" data-day="6">Day6</div>
+                <div class="calendar-day" data-day="7">Day7</div>
+                <div class="calendar-day" data-day="8">Day8</div>
+                <div class="calendar-day" data-day="9">Day9</div>
+                <div class="calendar-day" data-day="10">Day10</div>
+                <div class="calendar-day" data-day="11">Day11</div>
+                <div class="calendar-day" data-day="12">Day12</div>
+                <div class="calendar-day" data-day="13">Day13</div>
+                <div class="calendar-day" data-day="14">Day14</div>
+            </div>
+            <!-- 删除：生成成长海报按钮 -->
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-quote">"你不是来学习的，你是来改变的。每一次行动，都让你更接近力量和掌控感。"</div>
+            <div class="footer-author">—— John</div>
+            <div class="footer-info">网站仅作为14天行动挑战官方入口 | 禁止分享视频与任务内容 | 联系John：PCoach_John（微信）</div>
+            <div class="footer-buttons">
+                <a href="#welcome" class="btn btn-secondary">回到顶部 ↑</a>
+                <!-- 底部开启挑战按钮：同样滑动到任务导航 -->
+                <a href="#tasks" class="btn">立即开启挑战 →</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 联系John弹窗：修改为显示微信号 -->
+    <div id="contact-popup" class="popup">
+        <h3 style="color: #2D9D5C; margin-bottom: 20px; text-align: center; font-size: 24px; font-weight: 800;">联系John</h3>
+        <div style="text-align: center; margin-bottom: 30px; padding: 20px; background-color: rgba(26,26,26,0.8); border-radius: 8px; border: 2px solid #2D9D5C;">
+            <p style="font-size: 22px; color: #FFFFFF; margin-bottom: 10px;">微信账号：</p>
+            <p style="font-size: 28px; color: #4CAF50; font-weight: 800; letter-spacing: 2px;">PCoach_John</p>
+        </div>
+        <p style="text-align: center; margin-bottom: 25px; font-size: 18px; color: #E0E0E0;">添加微信获取一对一指导，备注「14天挑战」</p>
+        <div style="text-align: center;">
+            <button class="btn" onclick="closePopup('contact-popup')">关闭</button>
+        </div>
+    </div>
+
+    <div id="checkin-popup" class="popup">
+        <h3 style="color: #2D9D5C; margin-bottom: 25px; text-align: center; font-size: 28px; font-weight: 800;">✅ 挑战完成！</h3>
+        <p id="checkin-message" style="margin-bottom: 35px; text-align: center; font-size: 18px; line-height: 1.8;"></p>
+        <div style="text-align: center; gap: 15px; display: flex; justify-content: center; flex-wrap: wrap;">
+            <a id="next-task-link" class="btn">继续下一个挑战</a>
+            <button class="btn btn-secondary" onclick="closePopup('checkin-popup')">返回导航</button>
+        </div>
+    </div>
+
+    <div id="cancel-popup" class="popup">
+        <h3 style="color: #D32F2F; margin-bottom: 25px; text-align: center; font-size: 28px; font-weight: 800;">❌ 取消打卡</h3>
+        <p id="cancel-message" style="margin-bottom: 35px; text-align: center; font-size: 18px; line-height: 1.8;">确定要撤回 Day X 的打卡记录吗？</p>
+        <div style="text-align: center; gap: 15px; display: flex; justify-content: center; flex-wrap: wrap;">
+            <button id="confirm-cancel" class="btn btn-cancel">确认取消</button>
+            <button class="btn btn-secondary" onclick="closePopup('cancel-popup')">取消操作</button>
+        </div>
+    </div>
+
+    <!-- 新增：用户标识弹窗 -->
+    <div id="user-id-popup" class="popup">
+        <h3 style="color: #2D9D5C; margin-bottom: 20px; text-align: center; font-size: 24px; font-weight: 800;">请输入你的用户标识</h3>
+        <p style="text-align: center; margin-bottom: 15px; font-size: 16px; color: #AAAAAA;">不同用户标识将独立保存打卡进度</p>
+        <input type="text" class="user-id-input" id="user-id-input" placeholder="例如：张三/用户1001">
+        <div style="text-align: center; gap: 15px; display: flex; justify-content: center; flex-wrap: wrap;">
+            <button class="btn" onclick="confirmUserId()">确认</button>
+            <button class="btn btn-secondary" onclick="closePopup('user-id-popup')">稍后输入</button>
+        </div>
+    </div>
+
+    <div class="popup-overlay" id="popup-overlay"></div>
+
+    <script>
+        // 全局变量：当前登录用户标识
+        let currentUserId = '';
+        // 全局变量：当前用户的已完成天数
+        let completedDays = [];
+
+        // 1. 动态生成星空背景
+        function createStarryBackground() {
+            const container = document.getElementById('starry-bg');
+            const starCount = 300;
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                star.style.left = `${x}%`;
+                star.style.top = `${y}%`;
+
+                const size = Math.random() * 4 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+
+                const opacity = Math.random() * 0.9 + 0.1;
+                star.style.opacity = opacity;
+
+                const animationDuration = Math.random() * 9 + 1;
+                star.style.animationDuration = `${animationDuration}s`;
+
+                const moveX = Math.random() * 10 - 5;
+                const moveY = Math.random() * 10 - 5;
+                star.style.animation = `twinkle ${animationDuration}s linear infinite, float 30s linear infinite alternate`;
+                star.style.animationDelay = `${Math.random() * 10}s`;
+
+                container.appendChild(star);
+            }
+        }
+        createStarryBackground();
+
+        // 2. 导航滚动动效
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scroll');
+            } else {
+                header.classList.remove('scroll');
+            }
+        });
+
+        // 3. 弹窗控制
+        function openPopup(popupId) {
+            const popup = document.getElementById(popupId);
+            const overlay = document.getElementById('popup-overlay');
+            
+            popup.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            setTimeout(() => {
+                popup.style.transform = 'translate(-50%, -50%) scale(1.05)';
+            }, 100);
+        }
+        function closePopup(popupId) {
+            const popup = document.getElementById(popupId);
+            const overlay = document.getElementById('popup-overlay');
+            
+            popup.style.transform = 'translate(-50%, -50%) scale(0.9)';
+            setTimeout(() => {
+                popup.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+        document.getElementById('popup-overlay').addEventListener('click', function() {
+            document.querySelectorAll('.popup').forEach(popup => {
+                popup.style.transform = 'translate(-50%, -50%) scale(0.9)';
+                setTimeout(() => popup.classList.remove('active'), 300);
+            });
+            this.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        // 4. 多用户进度存储核心逻辑
+        // 页面加载时初始化用户
+        window.onload = function() {
+            initUser();
+            // 页面加载完成后高亮当前日期
+            highlightToday();
+        };
+
+        // 初始化用户：读取本地存储的用户标识，无则弹窗提示输入
+        function initUser() {
+            const savedUserId = localStorage.getItem('currentUserId');
+            if (savedUserId) {
+                currentUserId = savedUserId;
+                // 读取当前用户的打卡进度
+                completedDays = JSON.parse(localStorage.getItem(`completedDays_${currentUserId}`)) || [];
+                // 显示当前用户标识
+                document.getElementById('current-user-display').textContent = `当前用户：${currentUserId}`;
+                document.getElementById('current-user-display').style.display = 'block';
+                // 初始化按钮和进度
+                initTaskButtons();
+                updateProgress();
+            } else {
+                // 无用户标识，弹窗提示输入
+                openPopup('user-id-popup');
+            }
+        }
+
+        // 确认用户标识
+        function confirmUserId() {
+            const userIdInput = document.getElementById('user-id-input');
+            const userId = userIdInput.value.trim();
+            if (!userId) {
+                alert('请输入有效的用户标识！');
+                return;
+            }
+            // 保存用户标识
+            currentUserId = userId;
+            localStorage.setItem('currentUserId', currentUserId);
+            // 初始化当前用户的打卡进度
+            completedDays = JSON.parse(localStorage.getItem(`completedDays_${currentUserId}`)) || [];
+            // 显示用户标识
+            document.getElementById('current-user-display').textContent = `当前用户：${currentUserId}`;
+            document.getElementById('current-user-display').style.display = 'block';
+            // 初始化按钮和进度
+            initTaskButtons();
+            updateProgress();
+            // 关闭弹窗
+            closePopup('user-id-popup');
+        }
+
+        // 初始化任务按钮状态
+        function initTaskButtons() {
+            completedDays.forEach(day => {
+                const taskBtn = document.getElementById(`task-btn-${day}`);
+                const completeBtn = document.getElementById(`complete-btn-${day}`);
+                
+                taskBtn.classList.add('completed');
+                completeBtn.textContent = '取消打卡 ❌';
+                completeBtn.classList.remove('btn-secondary');
+                completeBtn.classList.add('btn-cancel');
+            });
+        }
+
+        // 5. 切换打卡/取消打卡状态
+        function toggleChallenge(day) {
+            if (!currentUserId) {
+                openPopup('user-id-popup');
+                alert('请先输入用户标识，以便保存你的打卡进度！');
+                return;
+            }
+
+            const isCompleted = completedDays.includes(day);
+            
+            if (!isCompleted) {
+                // 未完成 → 完成打卡
+                completedDays.push(day);
+                // 保存当前用户的进度（关键：使用用户标识作为key）
+                localStorage.setItem(`completedDays_${currentUserId}`, JSON.stringify(completedDays));
+                updateProgress();
+                updateTaskButton(day, true);
+                
+                // 打卡成功爆炸特效（如需取消可删除此行）
+                createConfetti();
+                
+                const messages = [
+                    `✅ Day ${day} 挑战通关！\n行动勋章已点亮，你的坚持正在重塑自我`,
+                    `🔥 突破时刻！Day ${day} 任务圆满完成\n你已积累 ${completedDays.length} 天行动能量，继续保持！`,
+                    `🌟 恭喜解锁 Day ${day} 成就！\n每一次行动，都是向更好的自己迈进一大步`,
+                    `🚀 行动落地，能量爆发！\nDay ${day} 挑战成功，专属成长轨迹已更新`,
+                    `💪 Day ${day} 通关认证！\n你正在用行动证明：改变，从现在开始`
+                ];
+                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                document.getElementById('checkin-message').textContent = randomMessage;
+                
+                const nextDay = day + 1;
+                const nextLink = nextDay <=14 ? `video-day${nextDay}.html` : '#progress';
+                document.getElementById('next-task-link').href = nextLink;
+                document.getElementById('next-task-link').textContent = nextDay >14 ? '查看完整成就' : '继续下一个挑战';
+
+                openPopup('checkin-popup');
+            } else {
+                // 已完成 → 显示取消确认弹窗
+                document.getElementById('cancel-message').textContent = `确定要撤回 Day ${day} 的打卡记录吗？`;
+                document.getElementById('confirm-cancel').onclick = function() {
+                    cancelChallenge(day);
+                };
+                openPopup('cancel-popup');
+            }
+        }
+
+        // 取消打卡逻辑
+        function cancelChallenge(day) {
+            completedDays = completedDays.filter(item => item !== day);
+            localStorage.setItem(`completedDays_${currentUserId}`, JSON.stringify(completedDays));
+            updateProgress();
+            updateTaskButton(day, false);
+            
+            closePopup('cancel-popup');
+            alert(`❌ Day ${day} 打卡已撤回\n进度已更新，可重新完成任务后再次打卡`);
+        }
+
+        // 更新单个任务按钮样式
+        function updateTaskButton(day, isCompleted) {
+            const taskBtn = document.getElementById(`task-btn-${day}`);
+            const completeBtn = document.getElementById(`complete-btn-${day}`);
+            
+            if (isCompleted) {
+                taskBtn.classList.add('completed');
+                completeBtn.textContent = '取消打卡 ❌';
+                completeBtn.classList.remove('btn-secondary');
+                completeBtn.classList.add('btn-cancel');
+            } else {
+                taskBtn.classList.remove('completed');
+                completeBtn.textContent = '完成挑战 ✅';
+                completeBtn.classList.remove('btn-cancel');
+                completeBtn.classList.add('btn-secondary');
+            }
+        }
+
+        // 6. 更新进度显示
+        function updateProgress() {
+            const totalDays = 14;
+            const completedCount = completedDays.length;
+            const percent = Math.round((completedCount / totalDays) * 100);
+            
+            document.getElementById('completed-days').textContent = completedCount;
+            document.getElementById('progress-percent').textContent = percent;
+            document.getElementById('progress-fill').style.width = `${percent}%`;
+            
+            document.querySelectorAll('.calendar-day').forEach(dayEl => {
+                const day = parseInt(dayEl.dataset.day);
+                if (completedDays.includes(day)) {
+                    dayEl.classList.add('completed');
+                    dayEl.style.transform = 'scale(1.15)';
+                    setTimeout(() => dayEl.style.transform = 'scale(1.1)', 200);
+                } else {
+                    dayEl.classList.remove('completed');
+                    dayEl.style.transform = 'scale(1)';
+                }
+            });
+            
+            // 计算连续打卡天数
+            let streak = 0;
+            if (completedCount > 0) {
+                completedDays.sort((a,b) => a-b);
+                streak = 1;
+                for (let i = completedDays.length-1; i > 0; i--) {
+                    if (completedDays[i] === completedDays[i-1] + 1) {
+                        streak++;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            document.getElementById('streak-days').textContent = streak;
+            
+            // 更新进度时重新高亮当前日期（避免被覆盖）
+            highlightToday();
+        }
+
+        // 7. 打卡成功爆炸特效函数（如需取消可删除此函数）
+        function createConfetti() {
+            const confettiCount = 150;
+            const container = document.body;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                
+                // 随机位置、颜色、大小（多色渐变，更美观）
+                confetti.style.left = `${Math.random() * 100}vw`;
+                const colors = ['#2D9D5C', '#4CAF50', '#66BB6A', '#81C784', '#A5D6A7'];
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = `${Math.random() * 8 + 4}px`;
+                confetti.style.height = `${Math.random() * 8 + 4}px`;
+                confetti.style.animationDelay = `${Math.random() * 2}s`;
+                confetti.style.animationDuration = `${Math.random() * 2 + 2}s`;
+                
+                container.appendChild(confetti);
+                
+                // 动画结束后移除元素（避免DOM堆积）
+                setTimeout(() => confetti.remove(), 3000);
+            }
+        }
+
+        // 8. 日历当前日期高亮函数
+        function highlightToday() {
+            const today = new Date();
+            const dayOfMonth = today.getDate(); // 获取当前日期（1-31）
+            
+            // 只在1-14号范围内高亮（符合14天挑战）
+            if (dayOfMonth >= 1 && dayOfMonth <= 14) {
+                document.querySelectorAll('.calendar-day').forEach(dayEl => {
+                    const day = parseInt(dayEl.dataset.day);
+                    if (day === dayOfMonth) {
+                        dayEl.classList.add('today');
+                    } else {
+                        dayEl.classList.remove('today'); // 移除其他日期的高亮
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
