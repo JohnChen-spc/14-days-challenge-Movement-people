@@ -149,6 +149,108 @@
         .user-id-input:focus {
             box-shadow: 0 0 15px rgba(45, 157, 92, 0.5);
         }
+        /* 新增：Day1 视频弹窗样式 */
+        #day1-popup {
+            max-width: 1100px; /* 视频弹窗更宽 */
+            width: 95%;
+            max-height: 90vh; /* 限制高度，避免超出屏幕 */
+            overflow-y: auto; /* 内容过多时可滚动 */
+            padding: 40px;
+            border-top-width: 15px;
+        }
+        /* 视频弹窗内样式 */
+        .day-popup-title {
+            font-size: 36px;
+            color: #2D9D5C;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(45, 157, 92, 0.6);
+            text-align: center;
+            font-weight: 900;
+        }
+        .day-popup-subtitle {
+            font-size: 22px;
+            color: #FFFFFF;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 700;
+        }
+        .day-popup-video {
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 比例 */
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 4px solid rgba(45, 157, 92, 0.5);
+            margin-bottom: 40px;
+            box-shadow: 0 0 30px rgba(45, 157, 92, 0.4);
+        }
+        .day-popup-video iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .day-popup-task {
+            background-color: rgba(26, 26, 26, 0.8);
+            padding: 30px;
+            border-left: 4px solid #2D9D5C;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        .day-popup-task h3 {
+            color: #2D9D5C;
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+        .day-popup-task strong {
+            color: #2D9D5C;
+            font-weight: 800;
+            font-size: 18px;
+        }
+        .day-popup-task ul {
+            margin: 15px 0 15px 25px;
+            list-style-type: disc;
+        }
+        .day-popup-task li {
+            margin-bottom: 10px;
+        }
+        .day-popup-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        /* 关闭视频弹窗按钮 */
+        .close-day-popup {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background-color: #D32F2F;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(211, 47, 47, 0.4);
+        }
+        .close-day-popup:hover {
+            background-color: #B71C1C;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(211, 47, 47, 0.6);
+        }
         header {
             background-color: rgba(26, 26, 26, 0.95);
             border-left: 4px solid #2D9D5C;
@@ -374,6 +476,20 @@
             .section-title {
                 font-size: 28px;
             }
+            /* 响应式调整视频弹窗 */
+            #day1-popup {
+                padding: 20px;
+                max-height: 85vh;
+            }
+            .day-popup-title {
+                font-size: 28px;
+            }
+            .day-popup-subtitle {
+                font-size: 18px;
+            }
+            .day-popup-task {
+                padding: 20px;
+            }
         }
         .task-item {
             display: flex;
@@ -385,6 +501,7 @@
             transition: all 0.4s ease;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             border: 1px solid rgba(45, 157, 92, 0.1);
+            cursor: pointer; /* 新增：提示可点击 */
         }
         .task-item:hover {
             background-color: rgba(26, 26, 26, 0.95);
@@ -698,10 +815,12 @@
                 <p>📹 所有任务通过高清视频指导，随时可回看复习</p>
             </div>
             <div class="task-grid">
-                <div class="task-item">
-                    <a href="video-day1.html" class="task-btn" id="task-btn-1">Day 1 挑战 →</a>
-                    <button class="btn complete-btn" id="complete-btn-1" onclick="toggleChallenge(1)">完成挑战 ✅</button>
+                <!-- 修改Day1：移除a标签，改为div+点击事件触发弹窗 -->
+                <div class="task-item" onclick="openDay1Popup()">
+                    <div class="task-btn" id="task-btn-1">Day 1 挑战 →</div>
+                    <button class="btn complete-btn" id="complete-btn-1" onclick="event.stopPropagation(); toggleChallenge(1)">完成挑战 ✅</button>
                 </div>
+                <!-- 其他天数保持不变 -->
                 <div class="task-item">
                     <a href="video-day2.html" class="task-btn" id="task-btn-2">Day 2 挑战 →</a>
                     <button class="btn complete-btn" id="complete-btn-2" onclick="toggleChallenge(2)">完成挑战 ✅</button>
@@ -850,6 +969,38 @@
         </div>
     </div>
 
+    <!-- 新增：Day1 视频弹窗 -->
+    <div id="day1-popup" class="popup">
+        <button class="close-day-popup" onclick="closeDay1Popup()">×</button>
+        <h1 class="day-popup-title">DAY 1 · 行动开启</h1>
+        <h2 class="day-popup-subtitle">身体激活 × 心智觉醒 × 落地行动</h2>
+        
+        <!-- Day1 视频 -->
+        <div class="day-popup-video">
+            <iframe src="https://player.xinpianchang.com/?aid=13549748&amp;mid=ro1V7E2oOdPwdXAM" allowfullscreen="" allow="fullscreen" frameborder="0" style="border: medium;"></iframe>
+        </div>
+
+        <!-- 任务说明 -->
+        <div class="day-popup-task">
+            <h3>📋 Day 1 任务说明</h3>
+            <p>今天是挑战的第一天，核心目标：<strong>打破惯性，迈出第一步</strong></p>
+            <ul>
+                <li><strong>BODY（身体）：</strong>跟随视频完成15分钟基础激活训练，无需器械，专注身体感知</li>
+                <li><strong>MIND（心智）：</strong>完成「自我觉察日志」，写下当前最想突破的一个卡点</li>
+                <li><strong>ACTION（行动）：</strong>向一个信任的朋友宣告你的14天挑战目标，获得外部 accountability</li>
+            </ul>
+            <p><strong>💡 关键提示：</strong>无需追求完美表现，重点是「完成」而非「做好」。今天的行动将为接下来13天奠定基础。</p>
+            <p><strong>⏰ 建议时长：</strong>总耗时约60分钟（视频学习30分钟 + 行动实践30分钟）</p>
+            <p><strong>🔄 回看权限：</strong>视频可反复观看，任务可随时补做</p>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div class="day-popup-buttons">
+            <button class="btn" onclick="toggleChallenge(1); closeDay1Popup()">完成挑战 ✅</button>
+            <button class="btn btn-secondary" onclick="closeDay1Popup()">关闭弹窗 ←</button>
+        </div>
+    </div>
+
     <div class="popup-overlay" id="popup-overlay"></div>
 
     <script>
@@ -934,6 +1085,32 @@
             this.classList.remove('active');
             document.body.style.overflow = 'auto';
         });
+
+        // 新增：Day1 弹窗控制
+        function openDay1Popup() {
+            const popup = document.getElementById('day1-popup');
+            const overlay = document.getElementById('popup-overlay');
+            
+            popup.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // 视频弹窗单独的缩放动画
+            setTimeout(() => {
+                popup.style.transform = 'translate(-50%, -50%) scale(1.02)';
+            }, 100);
+        }
+        function closeDay1Popup() {
+            const popup = document.getElementById('day1-popup');
+            const overlay = document.getElementById('popup-overlay');
+            
+            popup.style.transform = 'translate(-50%, -50%) scale(0.9)';
+            setTimeout(() => {
+                popup.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
 
         // 4. 多用户进度存储核心逻辑
         // 页面加载时初始化用户
@@ -1030,7 +1207,7 @@
                 document.getElementById('checkin-message').textContent = randomMessage;
                 
                 const nextDay = day + 1;
-                const nextLink = nextDay <=14 ? `video-day${nextDay}.html` : '#progress';
+                const nextLink = nextDay <=14 ? (nextDay === 2 ? 'video-day2.html' : `video-day${nextDay}.html`) : '#progress';
                 document.getElementById('next-task-link').href = nextLink;
                 document.getElementById('next-task-link').textContent = nextDay >14 ? '查看完整成就' : '继续下一个挑战';
 
