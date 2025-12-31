@@ -385,7 +385,6 @@
             transition: all 0.4s ease;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             border: 1px solid rgba(45, 157, 92, 0.1);
-            cursor: pointer; /* 新增：提示可点击 */
         }
         .task-item:hover {
             background-color: rgba(26, 26, 26, 0.95);
@@ -431,6 +430,7 @@
             letter-spacing: 1px;
             border: 2px solid transparent;
             cursor: pointer;
+            display: inline-block; /* 确保a标签和button样式统一，作为按键更美观 */
         }
         .task-btn:hover {
             background-color: #1E7D46;
@@ -447,6 +447,8 @@
             border-radius: 4px;
             text-transform: uppercase;
             letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
         }
         .progress-section {
             margin-bottom: 120px;
@@ -643,7 +645,6 @@
 <body>
     <div class="starry-bg" id="starry-bg"></div>
 
-
     <header id="header">
         <div class="container header-content">
             <div class="logo">
@@ -660,7 +661,6 @@
         </div>
     </header>
 
-
     <section id="welcome" class="welcome-section">
         <div class="container">
             <div class="video-container">
@@ -668,7 +668,6 @@
                     <iframe src="https://player.xinpianchang.com/?aid=13542410&amp;mid=DA96QeyDKeXQj5N0" allowfullscreen="" allow="fullscreen" frameborder="0" style="border: medium;"></iframe>
                 </div>
             </div>
-
 
             <h1 class="welcome-title">WELCOME TO 14-DAY ACTION CHALLENGE</h1>
             <div class="welcome-divider"></div>
@@ -689,7 +688,6 @@
         </div>
     </section>
 
-
     <section id="tasks" class="task-section">
         <div class="container">
             <h2 class="section-title">
@@ -704,70 +702,79 @@
                 <p>📹 所有任务通过高清视频指导，随时可回看复习</p>
             </div>
             <div class="task-grid">
-                <!-- Day1 转换为按钮形式，点击跳转指定链接 -->
+                <!-- 关键修改：Day1改为按钮样式的跳转按键，点击直接跳转指定链接 -->
                 <div class="task-item">
-                    <button class="task-btn" id="task-btn-1" onclick="window.open('https://johnchen-spc.github.io/14-days-challenge-Day1/', '_blank')">Day 1 挑战 →</button>
+                    <button class="task-btn" id="task-btn-1" onclick="window.location.href='https://johnchen-spc.github.io/14-days-challenge-Day1/'">Day 1 挑战 →</button>
                     <button class="btn complete-btn" id="complete-btn-1" onclick="toggleChallenge(1)">完成挑战 ✅</button>
                 </div>
-                <!-- Day2 转换为按钮形式，点击跳转指定链接 -->
+                <!-- 关键修改：Day2改为按钮样式的跳转按键，点击直接跳转指定链接 -->
                 <div class="task-item">
-                    <button class="task-btn" id="task-btn-2" onclick="window.open('https://johnchen-spc.github.io/14-Days-challenge-Day2/', '_blank')">Day 2 挑战 →</button>
+                    <button class="task-btn" id="task-btn-2" onclick="window.location.href='https://johnchen-spc.github.io/14-Days-challenge-Day2/'">Day 2 挑战 →</button>
                     <button class="btn complete-btn" id="complete-btn-2" onclick="toggleChallenge(2)">完成挑战 ✅</button>
                 </div>
-                <!-- Day3 转换为按钮形式，点击跳转指定链接 -->
+                <!-- 关键修改：Day3改为按钮样式的跳转按键，点击直接跳转指定链接 -->
                 <div class="task-item">
-                    <button class="task-btn" id="task-btn-3" onclick="window.open('https://johnchen-spc.github.io/14days-challenge-day3/', '_blank')">Day 3 挑战 →</button>
+                    <button class="task-btn" id="task-btn-3" onclick="window.location.href='https://johnchen-spc.github.io/14days-challenge-day3/'">Day 3 挑战 →</button>
                     <button class="btn complete-btn" id="complete-btn-3" onclick="toggleChallenge(3)">完成挑战 ✅</button>
                 </div>
-                <!-- 其他天数保持不变 -->
+                <!-- 关键修改：Day4改为按钮样式的跳转按键，点击直接跳转指定链接 -->
                 <div class="task-item">
-                    <a href="video-day4.html" class="task-btn" id="task-btn-4">Day 4 挑战 →</a>
+                    <button class="task-btn" id="task-btn-4" onclick="window.location.href='https://johnchen-spc.github.io/14-days-challenge-Day4/'">Day 4 挑战 →</button>
                     <button class="btn complete-btn" id="complete-btn-4" onclick="toggleChallenge(4)">完成挑战 ✅</button>
                 </div>
+                <!-- 关键修改：Day5改为按钮样式的跳转按键，点击直接跳转指定链接 -->
                 <div class="task-item">
-                    <a href="video-day5.html" class="task-btn" id="task-btn-5">Day 5 挑战 →</a>
+                    <button class="task-btn" id="task-btn-5" onclick="window.location.href='https://johnchen-spc.github.io/14days-challenge-day5/'">Day 5 挑战 →</button>
                     <button class="btn complete-btn" id="complete-btn-5" onclick="toggleChallenge(5)">完成挑战 ✅</button>
                 </div>
+                <!-- 关键修改：Day6改为按钮样式的跳转按键，点击直接跳转指定链接 -->
                 <div class="task-item">
-                    <a href="video-day6.html" class="task-btn" id="task-btn-6">Day 6 挑战 →</a>
+                    <button class="task-btn" id="task-btn-6" onclick="window.location.href='https://johnchen-spc.github.io/14-days-challenge-day6-/'">Day 6 挑战 →</button>
                     <button class="btn complete-btn" id="complete-btn-6" onclick="toggleChallenge(6)">完成挑战 ✅</button>
                 </div>
+                <!-- 关键修改：Day7改为按钮样式的跳转按键，点击直接跳转指定外部链接 -->
                 <div class="task-item">
-                    <a href="video-day7.html" class="task-btn" id="task-btn-7">Day 7 挑战 →</a>
+                    <button class="task-btn" id="task-btn-7" onclick="window.location.href='https://johnchen-spc.github.io/14days-challenge-day7/'">Day 7 挑战 →</button>
                     <button class="btn complete-btn" id="complete-btn-7" onclick="toggleChallenge(7)">完成挑战 ✅</button>
                 </div>
+                <!-- 关键修改：Day8改为按钮样式的跳转按键，点击直接跳转指定外部链接 -->
                 <div class="task-item">
-                    <a href="video-day8.html" class="task-btn" id="task-btn-8">Day 8 挑战 →</a>
+                    <button class="task-btn" id="task-btn-8" onclick="window.location.href='https://johnchen-spc.github.io/14days-challenge-day8/'">Day 8 挑战 →</button>
                     <button class="btn complete-btn" id="complete-btn-8" onclick="toggleChallenge(8)">完成挑战 ✅</button>
                 </div>
+                <!-- 关键修改：Day9改为按钮样式的跳转按键，点击直接跳转指定外部链接 -->
                 <div class="task-item">
-                    <a href="video-day9.html" class="task-btn" id="task-btn-9">Day 9 挑战 →</a>
+                    <button class="task-btn" id="task-btn-9" onclick="window.location.href='https://johnchen-spc.github.io/14days-challenge-day9/'">Day 9 挑战 →</button>
                     <button class="btn complete-btn" id="complete-btn-9" onclick="toggleChallenge(9)">完成挑战 ✅</button>
                 </div>
+                <!-- 关键修改：Day10改为按钮样式的跳转按键，点击直接跳转指定链接 -->
                 <div class="task-item">
-                    <a href="video-day10.html" class="task-btn" id="task-btn-10">Day 10 挑战 →</a>
+                    <button class="task-btn" id="task-btn-10" onclick="window.location.href='https://johnchen-spc.github.io/14days-challenge-day10/'">Day 10 挑战 →</button>
                     <button class="btn complete-btn" id="complete-btn-10" onclick="toggleChallenge(10)">完成挑战 ✅</button>
                 </div>
+                <!-- 关键修改：Day11改为按钮样式的跳转按键，点击直接跳转指定链接 -->
                 <div class="task-item">
-                    <a href="video-day11.html" class="task-btn" id="task-btn-11">Day 11 挑战 →</a>
+                    <button class="task-btn" id="task-btn-11" onclick="window.location.href='https://johnchen-spc.github.io/14days-challenge-day-11/'">Day 11 挑战 →</button>
                     <button class="btn complete-btn" id="complete-btn-11" onclick="toggleChallenge(11)">完成挑战 ✅</button>
                 </div>
+                <!-- 关键修改：Day12改为按钮样式的跳转按键，点击直接跳转指定链接 -->
                 <div class="task-item">
-                    <a href="video-day12.html" class="task-btn" id="task-btn-12">Day 12 挑战 →</a>
+                    <button class="task-btn" id="task-btn-12" onclick="window.location.href='https://johnchen-spc.github.io/14days-challenge-day12/'">Day 12 挑战 →</button>
                     <button class="btn complete-btn" id="complete-btn-12" onclick="toggleChallenge(12)">完成挑战 ✅</button>
                 </div>
+                <!-- 关键修改：Day13改为按钮样式的跳转按键，点击直接跳转指定链接 -->
                 <div class="task-item">
-                    <a href="video-day13.html" class="task-btn" id="task-btn-13">Day 13 挑战 →</a>
+                    <button class="task-btn" id="task-btn-13" onclick="window.location.href='https://johnchen-spc.github.io/14days-challenge-day13/'">Day 13 挑战 →</button>
                     <button class="btn complete-btn" id="complete-btn-13" onclick="toggleChallenge(13)">完成挑战 ✅</button>
                 </div>
+                <!-- 关键修改：Day14改为按钮样式的跳转按键，点击直接跳转指定链接 -->
                 <div class="task-item">
-                    <a href="video-day14.html" class="task-btn" id="task-btn-14">Day 14 挑战 →</a>
+                    <button class="task-btn" id="task-btn-14" onclick="window.location.href='https://johnchen-spc.github.io/14days-challenge-day-14/'">Day 14 挑战 →</button>
                     <button class="btn complete-btn" id="complete-btn-14" onclick="toggleChallenge(14)">完成挑战 ✅</button>
                 </div>
             </div>
         </div>
     </section>
-
 
     <section id="progress" class="progress-section">
         <div class="container">
@@ -806,7 +813,6 @@
         </div>
     </section>
 
-
     <footer>
         <div class="container">
             <div class="footer-quote">"你不是来学习的，你是来改变的。每一次行动，都让你更接近力量和掌控感。"</div>
@@ -819,7 +825,6 @@
             </div>
         </div>
     </footer>
-
 
     <!-- 联系John弹窗：修改为显示微信号 -->
     <div id="contact-popup" class="popup">
@@ -834,7 +839,6 @@
         </div>
     </div>
 
-
     <div id="checkin-popup" class="popup">
         <h3 style="color: #2D9D5C; margin-bottom: 25px; text-align: center; font-size: 28px; font-weight: 800;">✅ 挑战完成！</h3>
         <p id="checkin-message" style="margin-bottom: 35px; text-align: center; font-size: 18px; line-height: 1.8;"></p>
@@ -844,7 +848,6 @@
         </div>
     </div>
 
-
     <div id="cancel-popup" class="popup">
         <h3 style="color: #D32F2F; margin-bottom: 25px; text-align: center; font-size: 28px; font-weight: 800;">❌ 取消打卡</h3>
         <p id="cancel-message" style="margin-bottom: 35px; text-align: center; font-size: 18px; line-height: 1.8;">确定要撤回 Day X 的打卡记录吗？</p>
@@ -853,7 +856,6 @@
             <button class="btn btn-secondary" onclick="closePopup('cancel-popup')">取消操作</button>
         </div>
     </div>
-
 
     <!-- 新增：用户标识弹窗 -->
     <div id="user-id-popup" class="popup">
@@ -866,9 +868,7 @@
         </div>
     </div>
 
-
     <div class="popup-overlay" id="popup-overlay"></div>
-
 
     <script>
         // 全局变量：当前登录用户标识
@@ -876,48 +876,39 @@
         // 全局变量：当前用户的已完成天数
         let completedDays = [];
 
-
         // 1. 动态生成星空背景
         function createStarryBackground() {
             const container = document.getElementById('starry-bg');
             const starCount = 300;
 
-
             for (let i = 0; i < starCount; i++) {
                 const star = document.createElement('div');
                 star.classList.add('star');
-
 
                 const x = Math.random() * 100;
                 const y = Math.random() * 100;
                 star.style.left = `${x}%`;
                 star.style.top = `${y}%`;
 
-
                 const size = Math.random() * 4 + 1;
                 star.style.width = `${size}px`;
                 star.style.height = `${size}px`;
 
-
                 const opacity = Math.random() * 0.9 + 0.1;
                 star.style.opacity = opacity;
 
-
                 const animationDuration = Math.random() * 9 + 1;
                 star.style.animationDuration = `${animationDuration}s`;
-
 
                 const moveX = Math.random() * 10 - 5;
                 const moveY = Math.random() * 10 - 5;
                 star.style.animation = `twinkle ${animationDuration}s linear infinite, float 30s linear infinite alternate`;
                 star.style.animationDelay = `${Math.random() * 10}s`;
 
-
                 container.appendChild(star);
             }
         }
         createStarryBackground();
-
 
         // 2. 导航滚动动效
         window.addEventListener('scroll', function() {
@@ -928,7 +919,6 @@
                 header.classList.remove('scroll');
             }
         });
-
 
         // 3. 弹窗控制
         function openPopup(popupId) {
@@ -963,7 +953,6 @@
             document.body.style.overflow = 'auto';
         });
 
-
         // 4. 多用户进度存储核心逻辑
         // 页面加载时初始化用户
         window.onload = function() {
@@ -971,7 +960,6 @@
             // 页面加载完成后高亮当前日期
             highlightToday();
         };
-
 
         // 初始化用户：读取本地存储的用户标识，无则弹窗提示输入
         function initUser() {
@@ -991,7 +979,6 @@
                 openPopup('user-id-popup');
             }
         }
-
 
         // 确认用户标识
         function confirmUserId() {
@@ -1016,7 +1003,6 @@
             closePopup('user-id-popup');
         }
 
-
         // 初始化任务按钮状态
         function initTaskButtons() {
             completedDays.forEach(day => {
@@ -1030,7 +1016,6 @@
             });
         }
 
-
         // 5. 切换打卡/取消打卡状态
         function toggleChallenge(day) {
             if (!currentUserId) {
@@ -1038,7 +1023,6 @@
                 alert('请先输入用户标识，以便保存你的打卡进度！');
                 return;
             }
-
 
             const isCompleted = completedDays.includes(day);
             
@@ -1064,17 +1048,26 @@
                 document.getElementById('checkin-message').textContent = randomMessage;
                 
                 const nextDay = day + 1;
-                const nextLink = nextDay <=14 ? (nextDay <=3 ? `javascript:void(0)` : `video-day${nextDay}.html`) : '#progress';
-                // 处理Day1-3的下一个挑战链接
+                // 处理下一个挑战链接
                 let nextTaskHref = '#progress';
-                if (nextDay === 1) nextTaskHref = "javascript:window.open('https://johnchen-spc.github.io/14-days-challenge-Day1/', '_blank')";
-                else if (nextDay === 2) nextTaskHref = "javascript:window.open('https://johnchen-spc.github.io/14-Days-challenge-Day2/', '_blank')";
-                else if (nextDay === 3) nextTaskHref = "javascript:window.open('https://johnchen-spc.github.io/14days-challenge-day3/', '_blank')";
+                if (nextDay === 1) nextTaskHref = "https://johnchen-spc.github.io/14-days-challenge-Day1/";
+                else if (nextDay === 2) nextTaskHref = "https://johnchen-spc.github.io/14-Days-challenge-Day2/";
+                else if (nextDay === 3) nextTaskHref = "https://johnchen-spc.github.io/14days-challenge-day3/";
+                else if (nextDay === 4) nextTaskHref = "https://johnchen-spc.github.io/14-days-challenge-Day4/";
+                else if (nextDay === 5) nextTaskHref = "https://johnchen-spc.github.io/14days-challenge-day5/";
+                else if (nextDay === 6) nextTaskHref = "https://johnchen-spc.github.io/14-days-challenge-day6-/";
+                else if (nextDay === 7) nextTaskHref = "https://johnchen-spc.github.io/14days-challenge-day7/";
+                else if (nextDay === 8) nextTaskHref = "https://johnchen-spc.github.io/14days-challenge-day8/";
+                else if (nextDay === 9) nextTaskHref = "https://johnchen-spc.github.io/14days-challenge-day9/";
+                else if (nextDay === 10) nextTaskHref = "https://johnchen-spc.github.io/14days-challenge-day10/";
+                else if (nextDay === 11) nextTaskHref = "https://johnchen-spc.github.io/14days-challenge-day-11/";
+                else if (nextDay === 12) nextTaskHref = "https://johnchen-spc.github.io/14days-challenge-day12/";
+                else if (nextDay === 13) nextTaskHref = "https://johnchen-spc.github.io/14days-challenge-day13/";
+                else if (nextDay === 14) nextTaskHref = "https://johnchen-spc.github.io/14days-challenge-day-14/";
                 else if (nextDay <=14) nextTaskHref = `video-day${nextDay}.html`;
                 
                 document.getElementById('next-task-link').href = nextTaskHref;
                 document.getElementById('next-task-link').textContent = nextDay >14 ? '查看完整成就' : '继续下一个挑战';
-
 
                 openPopup('checkin-popup');
             } else {
@@ -1087,7 +1080,6 @@
             }
         }
 
-
         // 取消打卡逻辑
         function cancelChallenge(day) {
             completedDays = completedDays.filter(item => item !== day);
@@ -1098,7 +1090,6 @@
             closePopup('cancel-popup');
             alert(`❌ Day ${day} 打卡已撤回\n进度已更新，可重新完成任务后再次打卡`);
         }
-
 
         // 更新单个任务按钮样式
         function updateTaskButton(day, isCompleted) {
@@ -1117,7 +1108,6 @@
                 completeBtn.classList.add('btn-secondary');
             }
         }
-
 
         // 6. 更新进度显示
         function updateProgress() {
@@ -1160,7 +1150,6 @@
             highlightToday();
         }
 
-
         // 7. 打卡成功爆炸特效函数（如需取消可删除此函数）
         function createConfetti() {
             const confettiCount = 150;
@@ -1185,7 +1174,6 @@
                 setTimeout(() => confetti.remove(), 3000);
             }
         }
-
 
         // 8. 日历当前日期高亮函数
         function highlightToday() {
