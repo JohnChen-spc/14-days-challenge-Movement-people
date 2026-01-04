@@ -640,6 +640,37 @@
                 opacity: 0;
             }
         }
+        /* 新增：欢迎视频弹窗样式 */
+        #welcome-video-popup {
+            width: 95%;
+            max-width: 900px;
+            padding: 0;
+            border: none;
+            border-radius: 8px;
+        }
+        #welcome-video-popup .video-wrapper {
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            position: relative;
+        }
+        #welcome-video-popup .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(0,0,0,0.8);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -681,9 +712,11 @@
                 <p><strong>开始，就是一切。</strong></p>
                 <p>你的力量，藏在你不敢迈出的行动里。</p>
             </div>
+            <!-- 新增转化按钮：挑战前欢迎登陆视频 -->
             <div class="welcome-buttons">
-                <!-- 开启挑战按钮：点击滑动到任务导航 -->
                 <a href="#tasks" class="btn">立即开启挑战 →</a>
+                <!-- 新增按钮：查看欢迎登陆视频 -->
+                <button class="btn btn-secondary" onclick="openPopup('welcome-video-popup')">观看欢迎登陆视频 →</button>
             </div>
         </div>
     </section>
@@ -865,6 +898,14 @@
         <div style="text-align: center; gap: 15px; display: flex; justify-content: center; flex-wrap: wrap;">
             <button class="btn" onclick="confirmUserId()">确认</button>
             <button class="btn btn-secondary" onclick="closePopup('user-id-popup')">稍后输入</button>
+        </div>
+    </div>
+
+    <!-- 新增：欢迎登陆视频弹窗 -->
+    <div id="welcome-video-popup" class="popup">
+        <button class="close-btn" onclick="closePopup('welcome-video-popup')">×</button>
+        <div class="video-wrapper">
+            <iframe src="https://player.xinpianchang.com/?aid=13550060&amp;mid=XzVJwDqa3gM4D0EZ" allowfullscreen="" allow="fullscreen" frameborder="0" style="border: medium; position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
         </div>
     </div>
 
