@@ -1,10 +1,8 @@
-<!DOCTYPE html>
+复制<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 原生HTML跳转保障（优先级最高） -->
-    <meta http-equiv="refresh" content="0; url=https://johnchen-spc.github.io/14-days-challenge-Movement-people/">
     <title>Movement People · 14天行动挑战</title>
     <!-- 保留字体引入，用于其他文字样式 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -914,21 +912,6 @@
     <div class="popup-overlay" id="popup-overlay"></div>
 
     <script>
-        // ========== 强制跳转（双重保障） ==========
-        // 方案1：立即执行的JS跳转
-        (function() {
-            // 使用replace避免历史记录，跳转更彻底
-            window.location.replace('https://johnchen-spc.github.io/14-days-challenge-Movement-people/');
-            
-            // 备用：500ms后再次尝试跳转
-            setTimeout(() => {
-                if (!window.location.href.includes('14-days-challenge-Movement-people')) {
-                    window.location.href = 'https://johnchen-spc.github.io/14-days-challenge-Movement-people/';
-                }
-            }, 500);
-        })();
-
-        // 以下原有代码保持不变（即使跳转生效，代码仍保留）
         // 全局变量：当前登录用户标识
         let currentUserId = '';
         // 全局变量：当前用户的已完成天数
