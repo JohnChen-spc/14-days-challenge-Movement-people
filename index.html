@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movement People · 14天行动挑战 - 登录</title>
+    <!-- 字体引入 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Noto+Sans+SC:wght@500;700;900&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Noto Sans SC', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .starry-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0A0A0A;
+            z-index: -1;
+            overflow: hidden;
+        }
+        body {
+            color: #F5F5F5;
+            line-height: 1.7;
+            background-color: transparent;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 登录页面特定样式 */
+        .login-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+        }
+        
+        .login-card {
+            background: rgba(26, 26, 26, 0.95);
+            border-radius: 20px;
+            padding: 60px;
+            width: 100%;
+            max-width: 500px;
+            border: 2px solid #2D9D5C;
+            box-shadow: 0 20px 60px rgba(45, 157, 92, 0.2);
+        }
+        
+        .login-title {
+            color: #2D9D5C;
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 900;
+        }
+        
+        .login-subtitle {
+            color: #888;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 18px;
+        }
+        
+        .login-form {
+            margin-top: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #FFFFFF;
+            font-weight: 600;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(45, 157, 92, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #2D9D5C;
+            box-shadow: 0 0 0 3px rgba(45, 157, 92, 0.1);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 18px;
+            background: #2D9D5C;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 20px;
+        }
+        
+        .login-btn:hover {
+            background: #1E7D46;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(45, 157, 92, 0.3);
+        }
+        
+        .help-text {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+        }
+        
+        .error-message {
+            color: #ff6b6b;
+            text-align: center;
+            margin-top: 15px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 星空背景 -->
+    <div class="starry-bg" id="starry-bg"></div>
+
+    <!-- 登录页面内容 -->
+    <section class="login-section">
+        <div class="container">
+            <div class="login-card">
+                <h1 class="login-title">🔐 14天挑战登录</h1>
+                <p class="login-subtitle">请输入活动邀请邮件中的访问凭证</p>
+                
+                <div class="login-form">
+                    <div class="form-group">
+                        <label>邮箱地址</label>
+                        <input type="email" id="email" placeholder="请输入您的邮箱">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>访问密码</label>
+                        <input type="password" id="password" placeholder="请输入您的密码">
+                    </div>
+                    
+                    <button class="login-btn" onclick="login()">进入挑战 →</button>
+                    
+                    <div id="error-message" class="error-message"></div>
+                </div>
+                
+                <div class="help-text">
+                    <p>🎯 密码通过活动邀请邮件获取</p>
+                    <p>🔧 如需帮助，请添加微信：<strong>PCoach_John</strong></p>
+                    <p>📧 或发送邮件至：<strong>你的邮箱johnworld2423@gmail.com</strong></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    // 生成星空背景
+    function createStarryBackground() {
+        const container = document.getElementById('starry-bg');
+        const starCount = 200;
+        
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.style.position = 'absolute';
+            star.style.background = 'white';
+            star.style.borderRadius = '50%';
+            
+            const x = Math.random() * 100;
+            const y = Math.random() * 100;
+            star.style.left = `${x}%`;
+            star.style.top = `${y}%`;
+            
+            const size = Math.random() * 3 + 1;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            
+            star.style.opacity = Math.random() * 0.7 + 0.3;
+            star.style.animation = `twinkle ${Math.random() * 5 + 3}s infinite`;
+            
+            container.appendChild(star);
+        }
+    }
+    
+    // 闪烁动画
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // 允许登录的用户列表
+    const allowedUsers = {
+        "test@email.com": "123456",
+        "user@example.com": "abcdef"
+        // 可以在这里添加更多用户：
+        // "新用户邮箱": "对应的密码"
+    };
+    
+    // 登录验证函数
+    function login() {
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const errorMsg = document.getElementById('error-message');
+        
+        // 清空错误信息
+        errorMsg.style.display = 'none';
+        
+        // 验证输入是否为空
+        if (!email || !password) {
+            showError('请输入邮箱和密码');
+            return;
+        }
+        
+        // 验证用户信息
+        if (allowedUsers[email] && allowedUsers[email] === password) {
+            // 登录成功 - 存储登录状态
+            localStorage.setItem('challenge_login', 'true');
+            localStorage.setItem('challenge_user', email);
+            
+            // 跳转到挑战页面
+            window.location.href = 'challenge.html';
+        } else {
+            showError('邮箱或密码错误，请重试');
+        }
+    }
+    
+    // 显示错误信息
+    function showError(message) {
+        const errorMsg = document.getElementById('error-message');
+        errorMsg.textContent = message;
+        errorMsg.style.display = 'block';
+    }
+    
+    // 按回车键触发登录
+    document.getElementById('password').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') login();
+    });
+    
+    // 页面加载完成后初始化
+    window.onload = function() {
+        createStarryBackground();
+        document.getElementById('email').focus();
+    };
+    </script>
+</body>
+</html>
